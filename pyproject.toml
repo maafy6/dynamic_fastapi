@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "Dynamic FastAPI"
+version = "0.1.0"
+description = "Demo for FastAPI with Dynamic Routes and Models"
+authors = ["Matt Austin <matt@mattaust.in>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.95.1"
+uvicorn = "^0.21.1"
+pydantic = "^1.10.6"
+motor = "^3.1.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.2"
+pre-commit = "^3.1.1"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+black = "^23.3.0"
+ruff = "^0.0.262"
+
+[tool.isort]
+multi_line_output = 5
+
+[tool.ruff]
+line-length = 120
+select = [
+    "E", # https://github.com/charliermarsh/ruff#pycodestylet
+    "F", # https://github.com/charliermarsh/ruff#pyflakes
+    "UP", # https://github.com/charliermarsh/ruff#pyupgrade
+    "N", # https://github.com/charliermarsh/ruff#pep8-naming
+    "S", # https://github.com/charliermarsh/ruff#flake8-bandit
+    "C", # https://github.com/charliermarsh/ruff#flake8-comprehensions
+    "B", # https://github.com/charliermarsh/ruff#flake8-bugbear
+    "T" # https://github.com/charliermarsh/ruff#flake8-print
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
