@@ -2,6 +2,8 @@
 from logging import getLogger
 
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
 from dynamic_fastapi.app.depends import WindowsDBDep
 from dynamic_fastapi.model.task_type import TaskType, TaskTypeRegistry
@@ -22,10 +24,11 @@ def generate_routes() -> None:
         else:
             window_types = window_types | Window[task_type.params_model]
 
-    @windows_api.get("")
-    async def list_windows(windows_db: WindowsDBDep) -> list[window_types]:
+    @windows_api.get("", response_model=list[window_types])
+    async def list_windows(windows_db: WindowsDBDep) -> JSONResponse:
         """Return the list of windows."""
-        return [window async for window in windows_db.find()]
+        windows = [window async for window in windows_db.find()]
+        return JSONResponse(jsonable_encoder(windows))
 
 
 def _generate_routes(task_type: TaskType) -> None:
