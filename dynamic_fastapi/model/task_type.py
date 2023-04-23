@@ -62,14 +62,18 @@ class TaskType(DatabaseModel):
     def params_model(self) -> type[WindowParams]:
         """Pydantic mode for the task type parameters."""
 
+        params_model_name = f"{self.name.upper()}_WindowParams"
+        if params_model_name in globals():
+            return globals()[params_model_name]
+
         kwargs = {"task_type": (str, FieldInfo(default=self.name))}
         for ext_name, ext_args in self.extensions.items():
             ext_args = ext_args or {}
             ext = Extension.extension(ext_name, **ext_args)
             kwargs.update(ext.field_definitions())
 
-        model = create_model(
-            f"{self.name.upper()}_WindowParams",
+        globals()[params_model_name] = model = create_model(
+            params_model_name,
             __base__=WindowParams,
             __module__=self.__module__,
             **kwargs,

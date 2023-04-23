@@ -14,7 +14,7 @@ class TestWindowsApi:
         with patch(
             "dynamic_fastapi.app.windows.TaskTypeRegistry.task_types",
             return_value=dummy_types,
-        ):
+        ), patch("dynamic_fastapi.model.task_type.globals", return_value={}):
             generate_routes()
 
         routes = {route.path: route.methods for route in windows_api.routes}

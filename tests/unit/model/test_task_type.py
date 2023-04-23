@@ -1,4 +1,6 @@
 """Tests for dynamic_fastapi.model.task_type."""
+from unittest.mock import patch
+
 import pytest
 from pydantic import StrRegexError
 
@@ -48,7 +50,8 @@ class TestTaskType(ModelTest[TaskType]):
             },
         )
 
-        model = task_type.params_model
+        with patch("dynamic_fastapi.model.task_type.globals", return_value={}):
+            model = task_type.params_model
 
         assert model.__fields__.keys() == {
             "task_type",
