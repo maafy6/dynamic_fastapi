@@ -1,7 +1,8 @@
 """Models for dynamic_fastapi."""
 from collections.abc import Sequence
+from enum import Enum
 from logging import getLogger
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import Field, ValidationError, constr, create_model, validator
 from pydantic.fields import FieldInfo
@@ -66,7 +67,13 @@ class TaskType(DatabaseModel):
         if params_model_name in globals():
             return globals()[params_model_name]
 
-        kwargs = {"task_type": (str, FieldInfo(default=self.name))}
+        # Construct an enum to store the task type so that we can use the value
+        # in a Literal for Pydantic validation. This is mostly to be compliant
+        # with PEP 586. At runtime, using Literal[self.name] works just fine.
+        class _TaskTypeName(str, Enum):
+            _ = self.name
+
+        kwargs = {"task_type": (Literal[_TaskTypeName._], FieldInfo(default=self.name))}
         for ext_name, ext_args in self.extensions.items():
             ext_args = ext_args or {}
             ext = Extension.extension(ext_name, **ext_args)
