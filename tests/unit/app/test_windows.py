@@ -1,5 +1,8 @@
 """Tests for dynamic_fastapi.app.windows."""
-from dynamic_fastapi.app.windows import windows_api
+from unittest.mock import patch
+
+from dynamic_fastapi.app.windows import generate_routes, windows_api
+from dynamic_fastapi.model.task_type import TaskType
 
 
 class TestWindowsApi:
@@ -7,7 +10,15 @@ class TestWindowsApi:
 
     def test_routes(self) -> None:
         """Test routes."""
+        dummy_types = [TaskType(name="foo"), TaskType(name="bar")]
+        with patch(
+            "dynamic_fastapi.app.windows.TaskTypeRegistry.task_types",
+            return_value=dummy_types,
+        ):
+            generate_routes()
+
         routes = {route.path: route.methods for route in windows_api.routes}
         assert routes == {
-            "/windows/create": {"POST"},
+            "/windows/bar/create": {"POST"},
+            "/windows/foo/create": {"POST"},
         }

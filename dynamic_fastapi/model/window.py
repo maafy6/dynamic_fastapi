@@ -12,6 +12,11 @@ from dynamic_fastapi.model.base import DatabaseModel
 class WindowParams(BaseModel):
     """Window creation parameters model."""
 
+    class Config:
+        """Configuration for the parameters class."""
+
+        use_enum_values = True
+
     task_type: str
     """The type of task."""
     start_time: datetime
