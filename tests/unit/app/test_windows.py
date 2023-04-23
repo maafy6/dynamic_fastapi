@@ -19,6 +19,7 @@ class TestWindowsApi:
 
         routes = {route.path: route.methods for route in windows_api.routes}
         assert routes == {
+            "/windows": {"GET"},
             "/windows/bar/create": {"POST"},
             "/windows/foo/create": {"POST"},
         }
