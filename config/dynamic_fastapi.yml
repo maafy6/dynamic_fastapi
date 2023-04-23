@@ -1,0 +1,7 @@
+uvicorn:
+  port: 8000
+  log_level: "info"
+
+mongo:
+  host: "localhost"
+  database: "dynamic_fastapi"

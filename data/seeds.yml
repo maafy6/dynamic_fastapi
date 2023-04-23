@@ -1,0 +1,7 @@
+task_types:
+  - name: "task_alpha"
+    extensions: []
+  - name: "task_beta"
+    extensions: {"symbol_set": null}
+  - name: "task_gamma"
+    extensions: {"keynonce": {"key_len": 12, "nonce_len": 8}}
